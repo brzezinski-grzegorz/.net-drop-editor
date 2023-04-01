@@ -28,13 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.Monsters = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
+            // 
+            // Monsters
+            // 
+            this.Monsters.FormattingEnabled = true;
+            this.Monsters.Location = new System.Drawing.Point(12, 12);
+            this.Monsters.Name = "Monsters";
+            this.Monsters.Size = new System.Drawing.Size(128, 433);
+            this.Monsters.TabIndex = 0;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Monsters);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -43,5 +53,7 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.ListBox Monsters;
     }
 }

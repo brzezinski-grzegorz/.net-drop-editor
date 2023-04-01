@@ -15,6 +15,7 @@ namespace Drop_Editor
         public Form2()
         {
             InitializeComponent();
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -38,7 +39,10 @@ namespace Drop_Editor
                 writer.WriteLine("connection_string=" + connection_string);
             }
 
+            // Show message that config file has been created.
             MessageBox.Show("Database settings saved to config.ini.");
+            // Close this form after config file is created.
+            this.Hide();
         }
 
     }
