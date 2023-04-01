@@ -24,19 +24,19 @@ namespace Drop_Editor
             string config_file_path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "config.ini");
 
             // Get the values from the textboxes
-            string server_name = textBox1.Text;
-            string database_name = textBox2.Text;
-            string table_name = textBox3.Text;
-            string connection_string = textBox4.Text;
+            string server = textBox1.Text;
+            string username = textBox2.Text;
+            string password = textBox3.Text;
+            string database = textBox4.Text;
 
             // Write the values to the config.ini file
             using (StreamWriter writer = new StreamWriter(config_file_path))
             {
                 writer.WriteLine("[database_settings]");
-                writer.WriteLine("server_name=" + server_name);
-                writer.WriteLine("database_name=" + database_name);
-                writer.WriteLine("table_name=" + table_name);
-                writer.WriteLine("connection_string=" + connection_string);
+                writer.WriteLine("server=" + server);
+                writer.WriteLine("username=" + username);
+                writer.WriteLine("password=" + password);
+                writer.WriteLine("database=" + database);
             }
 
             // Show message that config file has been created.

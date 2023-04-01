@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Collections.Specialized;
 using System.Configuration;
+using System.Data.Odbc;
 
 namespace Drop_Editor
 {
@@ -42,10 +43,35 @@ namespace Drop_Editor
                         }
                     }
                 }
-                string server_name = settings["server_name"];
-                string database_name = settings["database_name"];
-                string table_name = settings["table_name"];
-                string connection_string = settings["connection_string"];
+                string server = settings["server"];
+                string username = settings["username"];
+                string password = settings["password"];
+                string database = settings["database"];
+
+                string connectionString = $"Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password};";
+                string query = "SELECT * FROM K_MONSTER";
+
+                using (OdbcConnection connection = new OdbcConnection(connectionString))
+                {
+                    connection.Open();
+
+                    using (OdbcCommand command = new OdbcCommand(query, connection))
+                    {
+                        using (OdbcDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Access the data in each row by column name or index
+                                int id = reader.GetInt32(0);
+                                string name = reader.GetString(1);
+                                // ...
+
+                                string rowText = $"{id} - {name}";
+                                Monsters.Items.Add(rowText);
+                            }
+                        }
+                    }
+                }
             }
             else
             {
