@@ -53,29 +53,27 @@ namespace Drop_Editor
                 string password = settings["password"];
                 string database = settings["database"];
 
-                string connectionString = $"Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password};";
-                string queryOne = "SELECT * FROM Item";
+                string connectionStringItem = $"Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password};";
+                
+                string queryItem = "SELECT * FROM Item";
 
-                using (OdbcConnection connectionOne = new OdbcConnection(connectionString))
+                using (OdbcConnection connectionItem = new OdbcConnection(connectionStringItem))
                 {
-                    connectionOne.Open();
+                    connectionItem.Open();
 
-                    using (OdbcCommand commandOne = new OdbcCommand(queryOne, connectionOne))
+                    using (OdbcCommand commandItem = new OdbcCommand(queryItem, connectionItem))
                     {
-                        using (OdbcDataReader reader = commandOne.ExecuteReader())
+                        using (OdbcDataReader reader = commandItem.ExecuteReader())
                         {
-                            while (reader.Read())
-                            {
-                                // Access the data in each row by column name or index
-                                int num = reader.GetInt32(0);
-                                string strname = reader.GetString(1);
-                                // ...
+                            OdbcDataAdapter adapterItem = new OdbcDataAdapter(commandItem);
+                            DataTable dataTableItem = new DataTable();
+                            adapterItem.Fill(dataTableItem);
 
-                                string rowText = $"{num} - {strname}";
-                                Items.Items.Add(rowText);
-                            }
+                            // Set the DataGridView's DataSource property to the DataTable
+                            dataGridView2.DataSource = dataTableItem;
                         }
                     }
+                    connectionItem.Close();
                 }
 
             }
@@ -89,9 +87,10 @@ namespace Drop_Editor
             }
         }
 
+        // Load Drops into textboxes.
         private void button1_Click(object sender, EventArgs e)
         {
-            // If file exist connect to database and show monster list.
+           /* // If file exist connect to database and show monster list.
             string configFilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "config.ini");
 
             if (File.Exists(configFilePath))
@@ -157,12 +156,14 @@ namespace Drop_Editor
                     textBox10.Text = persent05.ToString();
                     // ...
                 }
-            }
+                connection1.Close();
+            }*/
         }
 
+        // Load Monsters from table.
         private void button2_Click(object sender, EventArgs e)
         {
-            // If file exist connect to database and show monster list.
+            /* // If file exist connect to database and show monster list.
             string configFilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "config.ini");
 
             if (File.Exists(configFilePath))
@@ -190,26 +191,32 @@ namespace Drop_Editor
                 string password = settings["password"];
                 string database = settings["database"];
 
-                string connectionString = $"Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password};";
+                string connectionStringMonster = $"Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password};";
 
+                string queryMonster = "SELECT sSid, strName FROM K_MONSTER WHERE strName Like '%" + textBox11.Text + "%'";
 
-                string query = "SELECT sSid, strName FROM K_MONSTER WHERE strName Like '%" + textBox11.Text + "%'";
-
-                using (OdbcConnection connection = new OdbcConnection(connectionString))
+                using (OdbcConnection connectionMonster = new OdbcConnection(connectionStringMonster))
                 {
-                    connection.Open();
+                    connectionMonster.Open();
 
-                    using (OdbcCommand command = new OdbcCommand(query, connection))
+                    using (OdbcCommand commandMonster = new OdbcCommand(queryMonster, connectionMonster))
                     {
-                        OdbcDataAdapter adapter = new OdbcDataAdapter(command);
-                        DataTable dataTable = new DataTable();
-                        adapter.Fill(dataTable);
+                        OdbcDataAdapter adapterMonster = new OdbcDataAdapter(commandMonster);
+                        DataTable dataTableMonster = new DataTable();
+                        adapterMonster.Fill(dataTableMonster);
 
                         // Set the DataGridView's DataSource property to the DataTable
-                        dataGridView1.DataSource = dataTable;
+                        dataGridView1.DataSource = dataTableMonster;
                     }
                 }
-            }
+                
+            }*/
+        }
+
+        // Save Drops to table.
+        private void button8_Click(object sender, EventArgs e)
+        {
+            //TODO:
         }
     }
 }
