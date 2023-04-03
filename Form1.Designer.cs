@@ -307,6 +307,7 @@
             this.button3.TabIndex = 32;
             this.button3.Text = "Insert Drop";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
@@ -316,6 +317,7 @@
             this.button4.TabIndex = 33;
             this.button4.Text = "Insert Drop";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -325,6 +327,7 @@
             this.button5.TabIndex = 34;
             this.button5.Text = "Insert Drop";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -334,6 +337,7 @@
             this.button6.TabIndex = 35;
             this.button6.Text = "Insert Drop";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 
@@ -343,6 +347,7 @@
             this.button7.TabIndex = 36;
             this.button7.Text = "Insert Drop";
             this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // dataGridView2
             // 

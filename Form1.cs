@@ -209,7 +209,99 @@ namespace Drop_Editor
         // Save Drops to table.
         private void button8_Click(object sender, EventArgs e)
         {
-            //TODO:
+            // If file exist connect to database and show monster list.
+            string configFilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "config.ini");
+               
+            NameValueCollection settings = new NameValueCollection();
+
+                    using (StreamReader reader = new StreamReader(configFilePath))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            string[] parts = line.Split('=');
+                            if (parts.Length == 2)
+                            {
+                                settings[parts[0]] = parts[1];
+                            }
+                        }
+                    }
+
+                string server = settings["server"];
+                string username = settings["username"];
+                string password = settings["password"];
+                string database = settings["database"];
+
+            string connectionStringUpdate = $"Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password};";
+
+            using (OdbcConnection connectionUpdate = new OdbcConnection(connectionStringUpdate))
+                {
+                    try
+                    {
+                    connectionUpdate.Open();
+
+                        // Update the row in the database with the value from the textbox
+                        string sqlUpdate = "UPDATE K_MONSTER_ITEM SET" +
+                        " iItem01 = '" + textBox1.Text + "'," +
+                        " iItem02 = '" + textBox2.Text + "'," +
+                        " iItem03 = '" + textBox3.Text + "'," +
+                        " iItem04 = '" + textBox4.Text + "'," +
+                        " iItem05 = '" + textBox5.Text + "'," +
+                        " sPersent01 = '" + textBox6.Text + "'," +
+                        " sPersent02 = '" + textBox7.Text + "'," +
+                        " sPersent03 = '" + textBox8.Text + "'," +
+                        " sPersent04 = '" + textBox9.Text + "'," +
+                        " sPersent05 = '" + textBox10.Text + "' WHERE sIndex = '" + dataGridView1.SelectedRows[0].Cells[0].Value.ToString() + "'"; // Change column1 and id to match the column and row you want to update
+                        using (OdbcCommand commandUpdate = new OdbcCommand(sqlUpdate, connectionUpdate))
+                        {
+                        commandUpdate.ExecuteNonQuery();
+                        MessageBox.Show("Drop updated succesfully.");
+                    }
+
+                    ClearTextboxes();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
+                }
+        }
+
+        // Inserting drops from Datagrid.
+        private void button3_Click(object sender, EventArgs e)
+        {
+            textBox1.Text = dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+        }
+        // Inserting drops from Datagrid.
+        private void button4_Click(object sender, EventArgs e)
+        {
+            textBox2.Text = dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+        }
+        // Inserting drops from Datagrid.
+        private void button5_Click(object sender, EventArgs e)
+        {
+            textBox3.Text = dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+        }
+        // Inserting drops from Datagrid.
+        private void button6_Click(object sender, EventArgs e)
+        {
+            textBox4.Text = dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+        }
+        // Inserting drops from Datagrid.
+        private void button7_Click(object sender, EventArgs e)
+        {
+            textBox5.Text = dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+        }
+
+        private void ClearTextboxes()
+        {
+            foreach (Control control in this.Controls)
+            {
+                if (control is TextBox)
+                {
+                    control.Text = "";
+                }
+            }
         }
     }
 }
