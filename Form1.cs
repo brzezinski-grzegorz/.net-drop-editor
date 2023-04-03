@@ -10,9 +10,6 @@ using System.Data.SqlClient;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.Odbc;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Drop_Editor
 {
@@ -54,26 +51,22 @@ namespace Drop_Editor
                 string database = settings["database"];
 
                 string connectionStringItem = $"Driver={{SQL Server}};Server={server};Database={database};Uid={username};Pwd={password};";
-                
-                string queryItem = "SELECT * FROM Item";
 
                 using (OdbcConnection connectionItem = new OdbcConnection(connectionStringItem))
                 {
                     connectionItem.Open();
 
+                    string queryItem = "SELECT Num, strName From Item";
+
                     using (OdbcCommand commandItem = new OdbcCommand(queryItem, connectionItem))
                     {
-                        using (OdbcDataReader reader = commandItem.ExecuteReader())
-                        {
-                            OdbcDataAdapter adapterItem = new OdbcDataAdapter(commandItem);
-                            DataTable dataTableItem = new DataTable();
-                            adapterItem.Fill(dataTableItem);
+                        OdbcDataAdapter adapterItem = new OdbcDataAdapter(commandItem);
+                        DataTable dataTableItem = new DataTable();
+                        adapterItem.Fill(dataTableItem);
 
-                            // Set the DataGridView's DataSource property to the DataTable
-                            dataGridView2.DataSource = dataTableItem;
-                        }
+                        // Set the DataGridView's DataSource property to the DataTable
+                        dataGridView2.DataSource = dataTableItem;
                     }
-                    connectionItem.Close();
                 }
 
             }
@@ -90,7 +83,7 @@ namespace Drop_Editor
         // Load Drops into textboxes.
         private void button1_Click(object sender, EventArgs e)
         {
-           /* // If file exist connect to database and show monster list.
+            // If file exist connect to database and show monster list.
             string configFilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "config.ini");
 
             if (File.Exists(configFilePath))
@@ -157,13 +150,13 @@ namespace Drop_Editor
                     // ...
                 }
                 connection1.Close();
-            }*/
+            }
         }
 
         // Load Monsters from table.
         private void button2_Click(object sender, EventArgs e)
         {
-            /* // If file exist connect to database and show monster list.
+            // If file exist connect to database and show monster list.
             string configFilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "config.ini");
 
             if (File.Exists(configFilePath))
@@ -209,8 +202,8 @@ namespace Drop_Editor
                         dataGridView1.DataSource = dataTableMonster;
                     }
                 }
-                
-            }*/
+
+            }
         }
 
         // Save Drops to table.
