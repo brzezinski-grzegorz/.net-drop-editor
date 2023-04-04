@@ -1,20 +1,26 @@
 
-# Drop Editor
+# Knight Online Drop Editor
 
 This is Drop Editor created in C# desiged for .Net 2.0 so it will work with older versions of Windows Server and older PC, so the server admins have easier job.
 
 
-## How to run.
+## Features
 
-To run application simply open Drop Editor.exe  
+The main features right now iclude:
 
 ```bash
-  1. Run: Drop Editor.exe
-  2. Fill configuration information.
-  3. Once connected to database double-click on monster which drops you want to edit.
+- Creating easy-to-use config file to quicker manage database connection.
+- Fast search for monster you want to edit.
+- One click preview of Item you want to add to drop.
+- Button to insert drops to each of the slots.
 ```
     
-## Deployment
+## Preview
+
+![Logo](https://i.ibb.co/mcjqVND/image.png)
+
+
+## Additional Information
 
 For this editor to work you actually need to have odbc connection setup to MSSQL server. If you need any information on how to setup server and connection please refer to link below:
 
@@ -23,12 +29,11 @@ For this editor to work you actually need to have odbc connection setup to MSSQL
 ```
 
 
-## Optimizations
+## Updates
 
 Ver. 1.0.1:
 
-- Fixed this
-- Fixed that
-- Gonna fix that
+- Created stats item preview.
+- Updated data retreive functions.
 
 
