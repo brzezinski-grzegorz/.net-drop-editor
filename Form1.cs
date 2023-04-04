@@ -11,6 +11,10 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.Odbc;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Reflection.Emit;
+using System.Data.Common;
+using System.Collections;
+using Label = System.Windows.Forms.Label;
 
 namespace Drop_Editor
 {
@@ -201,15 +205,17 @@ namespace Drop_Editor
         {
             // Get the connection string.
             string connectionStringDrops = CreateODBCConnectionString();
-
+            // Create string to get monsters drops.
             string query1 = "SELECT * FROM K_MONSTER_ITEM WHERE sIndex = " + dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
-
+            // Create string to get monster name based on dataviewgrid selection.
+            string query2 = "SELECT strName FROM K_MONSTER WHERE sSid = " + dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+            // Open Connection.
             OdbcConnection connection1 = new OdbcConnection(connectionStringDrops);
             connection1.Open();
-
+            // Get drops from Monsters.
             OdbcCommand command1 = new OdbcCommand(query1, connection1);
             OdbcDataReader reader1 = command1.ExecuteReader();
-
+            
             if (reader1.Read())
             {
                 // Access the data in the selected row by column name or index
@@ -224,7 +230,7 @@ namespace Drop_Editor
                 int item05 = reader1.GetInt32(9);
                 string persent05 = reader1.GetString(10);
                 // ...
-
+                
                 // Update the UI with the selected row data
                 textBox1.Text = item01.ToString();
                 textBox2.Text = item02.ToString();
@@ -239,7 +245,20 @@ namespace Drop_Editor
                 // ...
             }
 
+            reader1.Close();
             connection1.Close();
+
+            // Get data for monster name.
+            OdbcConnection connection2 = new OdbcConnection(connectionStringDrops);
+            connection2.Open();
+            OdbcCommand command2 = new OdbcCommand(query2, connection2);
+            OdbcDataAdapter adapterMonsterName = new OdbcDataAdapter(command2);
+            DataTable dataTableMonsterName = new DataTable();
+            // Populate datatable.
+            adapterMonsterName.Fill(dataTableMonsterName);
+            // Populate monster name.
+            label16.Text = dataTableMonsterName.Rows[0]["strName"].ToString();
+            connection2.Close();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -273,5 +292,70 @@ namespace Drop_Editor
                 connectionMonster.Close();
             }
         }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Get the connection string.
+            string connectionString = CreateODBCConnectionString();
+            // Query to get monsters from table.
+            string queryItem = "SELECT * FROM ITEM WHERE Num = " + dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+
+            using (OdbcConnection connectionMonster = new OdbcConnection(connectionString))
+            {
+                connectionMonster.Open();
+
+                using (OdbcCommand commandMonster = new OdbcCommand(queryItem, connectionMonster))
+                {
+
+                    // execute the command and get the data reader
+                    OdbcDataReader reader = commandMonster.ExecuteReader();
+                    // read the first row
+                    if (reader.Read())
+                    {
+                        // set the label text to the value of the specific column
+                        label14.Text = reader.GetInt32(6).ToString();
+                        label40.Text = reader.GetInt32(10).ToString();
+                        label41.Text = reader.GetInt32(36).ToString();
+                        label42.Text = reader.GetInt32(37).ToString();
+                        label43.Text = reader.GetInt32(38).ToString();
+                        label44.Text = reader.GetInt32(39).ToString();
+                        label45.Text = reader.GetInt32(42).ToString();
+                        label46.Text = reader.GetByte(40).ToString();
+                        label47.Text = reader.GetByte(41).ToString();
+                        label48.Text = reader.GetInt32(43).ToString(); 
+                        label49.Text = reader.GetInt32(50).ToString();
+                        label50.Text = reader.GetInt32(51).ToString();
+                        // Second Column
+                        label51.Text = reader.GetInt16(13).ToString();
+                        label52.Text = reader.GetInt16(30).ToString();
+                        label53.Text = reader.GetInt16(31).ToString();
+                        label54.Text = reader.GetInt16(32).ToString();
+                        label55.Text = reader.GetInt16(33).ToString();
+                        label56.Text = reader.GetInt16(34).ToString();
+                        label57.Text = reader.GetInt16(35).ToString();
+                        label58.Text = reader.GetInt16(45).ToString();
+                        label59.Text = reader.GetInt16(46).ToString();
+                        label60.Text = reader.GetInt16(47).ToString();
+                        label61.Text = reader.GetInt16(48).ToString();
+                        label62.Text = reader.GetInt16(49).ToString();
+
+                        foreach (Control control in Controls)
+                        {
+                            if (control is Label)
+                            {
+                                Label label = (Label)control;
+                                if (label.Text == "0")
+                                {
+                                    label.ForeColor = Color.Red;
+                                }
+                            }
+                        }
+                    }
+
+                }
+                connectionMonster.Close();
+            }
+        }
+
     }
 }
