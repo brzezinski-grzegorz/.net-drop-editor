@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using System.Data.SqlClient;
-using System.Collections.Specialized;
-using System.Configuration;
 using System.Data.Odbc;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.Reflection.Emit;
-using System.Data.Common;
-using System.Collections;
 using Label = System.Windows.Forms.Label;
 
 namespace Drop_Editor
@@ -24,13 +14,13 @@ namespace Drop_Editor
         {
             InitializeComponent();
         }
-
+        // Funciton to check if the config file exsists.
         public static bool ConfigFileExists()
         {
             string configFilePath = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "config.ini");
             return File.Exists(configFilePath);
         }
-
+        // Function to retreive data from config file and parse it.
         public static string[] GetDatabaseConnectionVariables()
         {
             string[] connectionVariables = new string[4];
@@ -65,7 +55,7 @@ namespace Drop_Editor
             return connectionVariables;
 
         }
-
+        // Function to create connection string to be used through entire app.
         public static string CreateODBCConnectionString()
         {
             string[] connectionVariables = GetDatabaseConnectionVariables();
@@ -77,19 +67,20 @@ namespace Drop_Editor
             string connectionString = "Driver={SQL Server};Server=" + server + ";Database=" + database + ";Uid=" + username + ";Pwd=" + password + ";";
             return connectionString;
         }
-
+        // Main load of the form.
         private void Form1_Load(object sender, EventArgs e)
         {
             if (ConfigFileExists() != true)
             {
                 MessageBox.Show("No configuration file found, you need to create one first.");
+                // Hide main form.
                 this.Hide();
+                // Show form for configuration file creation.
                 Form2 form2 = new Form2();
                 // Show Form2
                 form2.ShowDialog();
             }
         }
-
         // Load Monsters from table.
         private void button2_Click(object sender, EventArgs e)
         {
@@ -118,11 +109,11 @@ namespace Drop_Editor
                         // View monsters in dataGrid.
                         dataGridView1.DataSource = dataTableMonster;
                     }
+                    adapterMonster.Dispose();
                 }
                 connectionMonster.Close();
             }
         }
-
         // Save Drops to table.
         private void button8_Click(object sender, EventArgs e)
         {
@@ -163,7 +154,6 @@ namespace Drop_Editor
                 connectionUpdate.Close();
             }
         }
-
         // Inserting drops from Datagrid.
         private void button3_Click(object sender, EventArgs e)
         {
@@ -194,13 +184,17 @@ namespace Drop_Editor
         {
             foreach (Control control in this.Controls)
             {
+                // Clear all of the textboxes after the update.
                 if (control is TextBox)
                 {
                     control.Text = "";
                 }
             }
-        }
 
+
+        }
+        // Populating drop textboxes.
+        // Once user uses Monster from first table it will automatically load it's drops.
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Get the connection string.
@@ -260,7 +254,8 @@ namespace Drop_Editor
             label16.Text = dataTableMonsterName.Rows[0]["strName"].ToString();
             connection2.Close();
         }
-
+        // Search for Item.
+        // Once button is pressed query will search through database for item named in textbox.
         private void button1_Click(object sender, EventArgs e)
         {
             // Get the connection string.
@@ -292,7 +287,8 @@ namespace Drop_Editor
                 connectionMonster.Close();
             }
         }
-
+        // Populating Labels of item Preview.
+        // Once item is selected in second table it will load it's data from table to labels.
         private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // Get the connection string.
