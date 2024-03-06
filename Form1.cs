@@ -276,7 +276,7 @@ namespace Drop_Editor
                     if (dataTableMonster.Rows.Count == 0)
                     {
                         // Show error message.
-                        MessageBox.Show("Monster not found in the database!");
+                        MessageBox.Show("Item not found in the database!");
                     }
                     else
                     {
@@ -340,12 +340,20 @@ namespace Drop_Editor
                             if (control is Label)
                             {
                                 Label label = (Label)control;
-                                if (label.Text == "0")
+
+                                // Assuming the text represents an integer value
+                                if (int.TryParse(label.Text, out int value) && value != 0)
                                 {
-                                    label.ForeColor = Color.Red;
+                                    label.ForeColor = System.Drawing.Color.Red;
+                                }
+                                else
+                                {
+                                    // Set color back to green for labels with value 0
+                                    label.ForeColor = System.Drawing.Color.Green;
                                 }
                             }
                         }
+
                     }
 
                 }
